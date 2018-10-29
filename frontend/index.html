@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Instacram</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- You can add your styles and scripts here -->
+	<link rel="stylesheet" type="text/css" media="screen" href="styles/provided.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type='text/css'>
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script type="module" src="src/helpers.js"></script>
+	<script type="module" src="src/api.js"></script>
+</head>
+<body>
+	<!-- This is an example app structure --> 
+	<div id="login" style="display: none">
+		<h1 style="text-align: center; margin:auto; ">Instacram</h1>
+		<div class="panel panel-default" style="margin:30px auto; width: 500px;">
+			<div class="panel-heading">
+				<h2 class="panel-title" style="text-align: center">Log in to your account</h2>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="usernameInput">Username</label>
+					<input type="username" class="form-control" id="usernameInput" placeholder="Enter Username" value="">
+				</div>
+				<div class="form-group">
+					<label for="passwordInput">Password</label>
+					<input type="password" class="form-control" id="passwordInput" placeholder="Password" value="">
+				</div>
+				<div class="alert alert-danger" role="alert" id='invalidLogin' style="display: none">
+					Incorrect username or password
+				</div>
+				<div class="panel_footer" style="text-align: center">
+					<input type="button" id="loginSubmit" class="btn btn-primary" value="Login"/>
+					<button type="button" id="toRegister" class="btn btn-primary">Rigister Now!</button>
+				</div>
+			</div>
+		</div>			
+	</div>
+	<div id="register" style="display: none">
+		<h1 style="text-align: center; margin:auto;">Instacram Register</h1>
+		<div class="panel panel-default" style="margin:30px auto; width: 500px;">
+			<div class="panel-heading">
+				<h2 class="panel-title" style="text-align: center">Rigister your account</h2>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="usernameInput">Username</label>
+					<input type="text" class="form-control" id="registerUsernameInput" placeholder="Enter Username" value="">
+				</div>
+				<div class="form-group">
+					<label for="passwordInput">Password</label>
+					<input type="password" class="form-control" id="registerPasswordInput" placeholder="Password" value="">
+				</div>
+				<div class="form-group">
+					<label for="passwordInput">Email</label>
+					<input type="text" class="form-control" id="registerEmailInput" placeholder="Email" value="">
+				</div>
+				<div class="form-group">
+					<label for="passwordInput">Name</label>
+					<input type="text" class="form-control" id="registerNameInput" placeholder="Name" value="">
+				</div>
+				<div class="alert alert-danger" role="alert" id='usernameTaken' style="display: none">
+					Username has been taken
+				</div>
+				<div class="alert alert-danger" role="alert" id='paraMiss' style="display: none">
+					Please fill all blanks
+				</div>
+				<div class="panel_footer" style="text-align: center">
+					<input type="button" id="registerSubmit" class="btn btn-primary" value="Submit"/>
+					<button type="button" id="toLogin" class="btn btn-primary">Return</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="mainpage" style="display: none">
+		<!-- <h1>Instacram</h1>
+		<ul>
+			<li><a href="#" data-target="login" class="nav-link">Login</a></li>
+			<li><a href="#" data-target="register" class="nav-link">Register</a></li>
+			<li><a href="#" data-target="mainpage" class="nav-link">Page</a></li>
+		</ul> -->
+		<header class='banner'>
+			<div id="banner-title" style="cursor: pointer"><h1>Instacram</h1></div>
+			<ul class='nav'>
+				<li type="button" id="post-button" class="nav-item btn btn-primary" data-toggle="modal" data-target="#myModal-post"><i class="material-icons" style="font-size:14px">add_photo_alternate</i> New Post</li>
+				<li type="button" id="profile-button" class="nav-item btn btn-primary"><i class="material-icons" style="font-size:14px">face</i> Profile</li>
+				<li type="button" id="logout-button"class="nav-item btn btn-primary"><i class="material-icons" style="font-size:14px">input</i> Logout</li>
+			</ul>
+		</header>
+		<main role='main'>
+			<!-- app goes here --> 
+			<div id='large-feed' style="padding-top:90px">
+				<!-- inject feed data -->
+			</div>
+		</main>
+		<!-- profile goes here -->
+		<div id="container" style="margin:0 auto; width: 640px; display: none">
+			<div class="media" style="padding-top:150px">
+				<div id="back" class="media-top btn btn-primary" style="height:35px">
+					<i class="material-icons" style="font-size:13px">backspace</i><b> Return</b>
+				</div>
+				<div class="media-left media-middle">
+					<img src="http://static.runoob.com/images/mix/img_avatar.png" class="media-object" style="width:120px; height:120px; border-radius:50%; overflow:hidden;">
+				</div>
+				<div class="media-body">
+					<div style="margin-left: 30px">
+						<h3 class="media-heading">My Profile</h3>
+						<h4 id="username">Username: </h4>
+						<p id="name">Name: </p>
+						<p id="pro-id">ID: </p>
+						<p id="email">Email: </p>
+						<p id="pro-post">Posts Total: </p>
+						<p id="fllwing">Following Number: </p>
+						<p id="fllwed">Followed Number: </p>
+					</div>	
+				</div>
+			</div>
+
+			<ul id="myTab" class="nav nav-tabs" style="margin-left: 100px;margin-top: 20px;">
+				<li id="tab-posts" class="active">
+					<a href="#tab-posts-contents" data-toggle="tab">POSTS</a>
+				</li>
+				<li id="tab-following">
+					<a href="#tab-following-contents" data-toggle="tab">FOLLOWING</a>
+				</li>
+			</ul>
+			<div id="myTabContent" class="tab-content" style="margin-left: 60px;margin-top: 20px;">
+				<div class="tab-pane fade in active" id="tab-posts-contents">
+					<ul id="post-lists">
+					</ul>
+				</div>
+				<div class="tab-pane fade" id="tab-following-contents">
+					<ul id="follow-lists">
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- modal for posting -->
+		<div class="modal fade" id="myModal-post" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" 
+								aria-hidden="true">×
+						</button>
+						<h3 class="modal-title" id="myModalLabel">
+							Post something interesting...
+						</h3>
+					</div>
+					<div class="modal-body" style="height:250px; overflow-y:auto">
+						<form class="bs-example bs-example-form" role="form">
+								<div class="input-group">
+									<input type="text" class="form-control" style="height:150px">
+									<span class="input-group-btn">
+										<button class="btn btn-primary" style="height:150px" type="button">Insta!</button>
+									</span>
+								</div><!-- /input-group -->
+								<div class="nav-item" style="margin-top:30px"><input type="file"/></div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" 
+								data-dismiss="modal">Close
+						</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+
+		<!-- modal for showing like -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" style="width:300px">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" 
+								aria-hidden="true">×
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							Who likes this...
+						</h4>
+					</div>
+					<div class="modal-body" style="height:250px; overflow-y:auto">
+						<ul id="like-list" class="list-group">
+							<li class="list-group-item">1</li>
+							<li class="list-group-item">1</li>
+							<li class="list-group-item">1</li>
+							<li class="list-group-item">1</li>
+							<li class="list-group-item">1</li>
+							<li class="list-group-item">1</li>
+							<li class="list-group-item">1</li>
+							<li class="list-group-item">1</li>
+						</ul>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" 
+								data-dismiss="modal">Close
+						</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<footer>
+			<p>Instacram</p>
+		</footer>
+
+	</div>
+	
+	<script type="module" src="src/main.js"></script>
+</body>
+</html>
